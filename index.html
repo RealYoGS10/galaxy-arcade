@@ -7,7 +7,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
-        /* CRAZY GAMES DARK THEME */
         body {
             background-color: #0c001c;
             color: #ffffff;
@@ -18,7 +17,7 @@
             overflow: hidden;
         }
 
-        /* SIDEBAR (From your CodePen/CrazyGames images) */
+        /* SIDEBAR */
         .sidebar {
             width: 80px;
             background-color: #12002e;
@@ -27,7 +26,6 @@
             align-items: center;
             padding-top: 20px;
             border-right: 1px solid #bc13fe;
-            z-index: 10;
         }
 
         .side-btn {
@@ -41,35 +39,63 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.3s;
             font-size: 20px;
+            transition: 0.3s;
         }
 
-        .side-btn:hover {
-            background: #bc13fe;
-            box-shadow: 0 0 15px #bc13fe;
-            transform: scale(1.1);
-        }
+        .side-btn:hover { background: #bc13fe; box-shadow: 0 0 15px #bc13fe; }
 
-        /* MAIN DASHBOARD */
+        /* MAIN CONTENT */
         .main-content {
             flex: 1;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
             padding-bottom: 100px;
         }
 
         header {
-            padding: 20px 40px;
+            padding: 20px;
             background: #12002e;
             border-bottom: 2px solid #bc13fe;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
         }
 
-        /* THEATER MODE (The Crazy Games Play Window) */
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            padding: 40px;
+        }
+
+        .card {
+            background: #1a003d;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #ff00ff;
+            box-shadow: 0 0 25px #ff00ff;
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: #220044; /* Backup color if image fails */
+        }
+
+        .card-name {
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* THEATER */
         #theater {
             display: none;
             position: fixed;
@@ -89,71 +115,13 @@
 
         iframe { flex: 1; width: 100%; border: none; }
 
-        /* CATALOG GRIDS */
-        .section-title {
-            padding: 30px 40px 10px;
-            font-size: 1.5rem;
-            color: #d880ff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-            padding: 20px 40px;
-        }
-
-        /* GAME CARDS (Fixed Image Logic) */
-        .card {
-            background: #1a003d;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: #ff00ff;
-            box-shadow: 0 0 25px #ff00ff;
-        }
-
-        .card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-bottom: 2px solid #bc13fe;
-        }
-
-        .card-name {
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        /* MUSIC BAR */
-        .music-bar {
-            position: fixed; bottom: 0; left: 80px; right: 0;
-            background: #12002e;
-            border-top: 2px solid #bc13fe;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
         .btn {
             background: #bc13fe;
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-family: 'Orbitron';
-            font-weight: bold;
             cursor: pointer;
         }
     </style>
@@ -161,59 +129,44 @@
 <body>
 
     <div class="sidebar">
-        <div class="side-btn" title="Home" onclick="location.reload()">🏠</div>
-        <div class="side-btn" title="Trending">🔥</div>
-        <div class="side-btn" title="Action">⚔️</div>
-        <div class="side-btn" title="Drive">🏎️</div>
+        <div class="side-btn">🏠</div>
+        <div class="side-btn">🔥</div>
+        <div class="side-btn">🏎️</div>
     </div>
 
     <div class="main-content">
         <header>
             <h1>GALAXY_HUB // UNIT-01</h1>
-            <div style="color: #bc13fe;">STATUS: ONLINE</div>
         </header>
 
         <div id="theater">
             <div class="t-header">
                 <button class="btn" onclick="closeGame()">⬅ HUB</button>
-                <h2 id="game-title" style="margin:0;">MISSION</h2>
+                <h2 id="game-title">MISSION</h2>
                 <button class="btn" onclick="goFull()">⛶ FULLSCREEN</button>
             </div>
             <iframe id="game-frame"></iframe>
         </div>
 
-        <div class="section-title">Top Picks For You</div>
         <div class="grid" id="main-grid"></div>
     </div>
 
-    <div class="music-bar">
-        <button class="btn" onclick="toggleMusic()">🎵 PLAY/PAUSE SYSTEM AUDIO</button>
-    </div>
-
-    <audio id="bg-audio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
-
     <script>
-        // MASTER GAME LIST - I used the 6 you gave me + 24 more for 30 total
+        // Use verified URLs from stable servers
         const games = [
-            { n: "Bloxd.io", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/1057/625/1657876116.png" },
+            { n: "Bloxd.io", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png" },
             { n: "Veck.io", u: "https://veck.io/", i: "https://img.gamedistribution.com/83273640700c439185794c1f6d7247d8-512x512.jpeg" },
             { n: "Space Waves", u: "https://spacewaves.io/", i: "https://img.gamedistribution.com/5f7623971e4d41389886470081d6683a-512x512.jpeg" },
             { n: "Traffic Rider", u: "https://traffic-rider.io/", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
-            { n: "Rocket Goal", u: "https://rocketgoal.io/", i: "https://img.gamedistribution.com/264287570481498696ec0667e45e758e-512x512.jpeg" },
-            { n: "Drift Hunters", u: "https://www.bing.com/games/embed/drift-hunters/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
-            { n: "Cyber Racer", u: "https://games.gamezop.com/g/SkhljT2fdgb", i: "https://static.gamezop.com/SkhljT2fdgb/thumb.png" },
-            { n: "Neon Biker", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
-            { n: "Drift Boss", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
-            { n: "Tower Twist", u: "https://games.gamezop.com/g/H1Zl1kr7mX", i: "https://static.gamezop.com/H1Zl1kr7mX/thumb.png" }
+            { n: "Rocket Goal", u: "https://rocketgoal.io/", i: "https://img.gamedistribution.com/264287570481498696ec0667e45e758e-512x512.jpeg" }
         ];
 
         const grid = document.getElementById('main-grid');
-        // Loop to create 30 cards
         for(let i=0; i<30; i++) {
             let g = games[i % games.length];
             grid.innerHTML += `
                 <div class="card" onclick="play('${g.u}', '${g.n}')">
-                    <img src="${g.i}" onerror="this.src='https://via.placeholder.com/300x160/220044/ffffff?text=MISSION+IMAGE'">
+                    <img src="${g.i}" onerror="this.src='https://via.placeholder.com/300x160/220044/ffffff?text=MISSION'">
                     <div class="card-name">${g.n}</div>
                 </div>`;
         }
@@ -232,12 +185,6 @@
         function goFull() {
             let f = document.getElementById('game-frame');
             if (f.requestFullscreen) f.requestFullscreen();
-            else if (f.webkitRequestFullscreen) f.webkitRequestFullscreen();
-        }
-
-        const audio = document.getElementById('bg-audio');
-        function toggleMusic() {
-            audio.paused ? audio.play() : audio.pause();
         }
     </script>
 </body>
