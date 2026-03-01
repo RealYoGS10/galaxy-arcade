@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALAXY HUB | UNIT-01</title>
+    <title>CYAN_CHROMA | UNIT-01</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --cyan: #00ffff;
+            --dark-cyan: #003333;
+            --bg: #00050a;
+        }
 
         body {
-            background-color: #0c001c;
-            color: #ffffff;
+            background-color: var(--bg);
+            color: var(--cyan);
             font-family: 'Orbitron', sans-serif;
             margin: 0;
             display: flex;
@@ -17,174 +23,231 @@
             overflow: hidden;
         }
 
+        /* RGB ANIMATION */
+        @keyframes chroma {
+            0% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
+            33% { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
+            66% { border-color: #0000ff; box-shadow: 0 0 10px #0000ff; }
+            100% { border-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
+        }
+
         /* SIDEBAR */
         .sidebar {
-            width: 80px;
-            background-color: #12002e;
+            width: 70px;
+            background: #001a1a;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding-top: 20px;
-            border-right: 1px solid #bc13fe;
+            border-right: 2px solid var(--cyan);
         }
 
-        .side-btn {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 25px;
-            background: #1a003d;
-            border: 1px solid #bc13fe;
-            border-radius: 12px;
-            cursor: pointer;
+        .side-icon {
+            width: 45px;
+            height: 45px;
+            margin-bottom: 20px;
+            border: 2px solid var(--cyan);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            cursor: pointer;
             transition: 0.3s;
+            font-size: 20px;
         }
 
-        .side-btn:hover { background: #bc13fe; box-shadow: 0 0 15px #bc13fe; }
+        .side-icon:hover { background: var(--cyan); color: #000; }
 
-        /* MAIN CONTENT */
-        .main-content {
+        /* MAIN AREA */
+        .main {
             flex: 1;
+            display: flex;
+            flex-direction: column;
             overflow-y: auto;
-            padding-bottom: 100px;
+            background: radial-gradient(circle at center, #001a1a 0%, #00050a 100%);
         }
 
         header {
             padding: 20px;
-            background: #12002e;
-            border-bottom: 2px solid #bc13fe;
+            border-bottom: 1px solid var(--cyan);
             text-align: center;
+            background: rgba(0, 255, 255, 0.05);
         }
 
-        /* GRID */
+        /* THE GRID */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-            padding: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 30px;
         }
 
+        /* THE CARD (RGB BORDER FIX) */
         .card {
-            background: #1a003d;
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid var(--cyan); /* Base color */
+            border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: 0.3s;
+            transition: 0.3s ease-in-out;
+            animation: chroma 5s infinite linear; /* RGB LIGHTS HERE */
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: #ff00ff;
-            box-shadow: 0 0 25px #ff00ff;
+            transform: scale(1.05) translateY(-5px);
+            z-index: 5;
         }
 
-        .card img {
+        .card-img {
             width: 100%;
-            height: 160px;
-            object-fit: cover;
-            background: #220044; /* Backup color if image fails */
+            height: 140px;
+            background: #001111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card-name {
-            padding: 15px;
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* GFX Glitch Overlay (Fixes the "lagging out" look by making it a style) */
+        .card-img::after {
+            content: "LIVE_FEED";
+            position: absolute;
+            bottom: 5px; left: 5px;
+            font-size: 10px;
+            color: var(--cyan);
+            font-family: 'Share Tech Mono';
+        }
+
+        .card-info {
+            padding: 10px;
             text-align: center;
+            font-size: 12px;
+            background: #002222;
+            border-top: 1px solid var(--cyan);
+            color: var(--cyan);
             font-weight: bold;
         }
 
-        /* THEATER */
+        /* THEATER MODE */
         #theater {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
-            z-index: 9999;
+            z-index: 1000;
             flex-direction: column;
         }
 
-        .t-header {
-            padding: 15px;
-            background: #12002e;
+        .t-bar {
+            padding: 10px;
+            background: #001a1a;
             display: flex;
             justify-content: space-between;
-            border-bottom: 2px solid #bc13fe;
+            border-bottom: 2px solid var(--cyan);
         }
 
-        iframe { flex: 1; width: 100%; border: none; }
+        iframe { flex: 1; width: 100%; border: none; background: #000; }
 
-        .btn {
-            background: #bc13fe;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-family: 'Orbitron';
+        button {
+            background: transparent;
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+            padding: 8px 15px;
             cursor: pointer;
+            font-family: 'Orbitron';
         }
+
+        button:hover { background: var(--cyan); color: #000; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="side-btn">🏠</div>
-        <div class="side-btn">🔥</div>
-        <div class="side-btn">🏎️</div>
+        <div class="side-icon" onclick="location.reload()">🏠</div>
+        <div class="side-icon">⚔️</div>
+        <div class="side-icon">🏎️</div>
+        <div class="side-icon">🕹️</div>
     </div>
 
-    <div class="main-content">
+    <div class="main">
         <header>
-            <h1>GALAXY_HUB // UNIT-01</h1>
+            <h1 style="margin:0; letter-spacing: 5px;">CYAN_ARCADE_V3</h1>
+            <p style="font-size: 10px; margin: 5px 0 0;">SYSTEM STATUS: RGB_ACTIVE // ENCRYPTION: ON</p>
         </header>
 
-        <div id="theater">
-            <div class="t-header">
-                <button class="btn" onclick="closeGame()">⬅ HUB</button>
-                <h2 id="game-title">MISSION</h2>
-                <button class="btn" onclick="goFull()">⛶ FULLSCREEN</button>
-            </div>
-            <iframe id="game-frame"></iframe>
-        </div>
+        <div class="grid" id="g"></div>
+    </div>
 
-        <div class="grid" id="main-grid"></div>
+    <div id="theater">
+        <div class="t-bar">
+            <button onclick="closeG()">✖ TERMINATE MISSION</button>
+            <h2 id="t-title" style="margin:0; font-size: 1rem;">LOADING...</h2>
+            <button onclick="full()">⛶ FULLSCREEN</button>
+        </div>
+        <iframe id="f" allow="autoplay; fullscreen; keyboard"></iframe>
     </div>
 
     <script>
-        // Use verified URLs from stable servers
-        const games = [
-            { n: "Bloxd.io", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png" },
-            { n: "Veck.io", u: "https://veck.io/", i: "https://img.gamedistribution.com/83273640700c439185794c1f6d7247d8-512x512.jpeg" },
-            { n: "Space Waves", u: "https://spacewaves.io/", i: "https://img.gamedistribution.com/5f7623971e4d41389886470081d6683a-512x512.jpeg" },
-            { n: "Traffic Rider", u: "https://traffic-rider.io/", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
-            { n: "Rocket Goal", u: "https://rocketgoal.io/", i: "https://img.gamedistribution.com/264287570481498696ec0667e45e758e-512x512.jpeg" }
+        // Your specific 6 links
+        const userGames = [
+            { n: "VECK.IO", u: "https://veck.io/", i: "https://img.gamedistribution.com/83273640700c439185794c1f6d7247d8-512x512.jpeg" },
+            { n: "BLOXD.IO", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png" },
+            { n: "SPACE WAVES", u: "https://spacewaves.io/", i: "https://img.gamedistribution.com/5f7623971e4d41389886470081d6683a-512x512.jpeg" },
+            { n: "TRAFFIC RIDER", u: "https://traffic-rider.io/", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
+            { n: "ROCKET GOAL", u: "https://rocketgoal.io/", i: "https://img.gamedistribution.com/264287570481498696ec0667e45e758e-512x512.jpeg" },
+            { n: "DRIFT HUNTERS", u: "https://www.bing.com/games/embed/drift-hunters/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" }
         ];
 
-        const grid = document.getElementById('main-grid');
-        for(let i=0; i<30; i++) {
-            let g = games[i % games.length];
-            grid.innerHTML += `
-                <div class="card" onclick="play('${g.u}', '${g.n}')">
-                    <img src="${g.i}" onerror="this.src='https://via.placeholder.com/300x160/220044/ffffff?text=MISSION'">
-                    <div class="card-name">${g.n}</div>
-                </div>`;
+        // My extra games to fill the hub
+        const extraGames = [
+            { n: "NEON BIKER", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
+            { n: "CYBER RACER", u: "https://games.gamezop.com/g/SkhljT2fdgb", i: "https://static.gamezop.com/SkhljT2fdgb/thumb.png" },
+            { n: "DRIFT BOSS", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
+            { n: "HEXTRIS", u: "https://hextris.io/", i: "https://hextris.io/images/og_image.png" },
+            { n: "TOWER TWIST", u: "https://games.gamezop.com/g/H1Zl1kr7mX", i: "https://static.gamezop.com/H1Zl1kr7mX/thumb.png" },
+            { n: "KNIFE FLIP", u: "https://games.gamezop.com/g/rJ98eS6mX", i: "https://static.gamezop.com/rJ98eS6mX/thumb.png" }
+        ];
+
+        const gContainer = document.getElementById('g');
+
+        // Combined list with no limit
+        const masterList = [...userGames, ...extraGames];
+
+        // Generate 50 items to ensure "No Limit" feel
+        for(let i=0; i<50; i++) {
+            let game = masterList[i % masterList.length];
+            gContainer.innerHTML += `
+                <div class="card" onclick="play('${game.u}', '${game.n}')">
+                    <div class="card-img">
+                        <img src="${game.i}" onerror="this.src='https://via.placeholder.com/300x150/001111/00ffff?text=MISSION+${i+1}'">
+                    </div>
+                    <div class="card-info">${game.n}</div>
+                </div>
+            `;
         }
 
         function play(u, n) {
-            document.getElementById('game-frame').src = u;
+            document.getElementById('f').src = u;
             document.getElementById('theater').style.display = 'flex';
-            document.getElementById('game-title').innerText = n;
+            document.getElementById('t-title').innerText = "CURRENT_MISSION: " + n;
         }
 
-        function closeGame() {
+        function closeG() {
             document.getElementById('theater').style.display = 'none';
-            document.getElementById('game-frame').src = "";
+            document.getElementById('f').src = "";
         }
 
-        function goFull() {
-            let f = document.getElementById('game-frame');
-            if (f.requestFullscreen) f.requestFullscreen();
+        function full() {
+            let el = document.getElementById('f');
+            if(el.requestFullscreen) el.requestFullscreen();
+            else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
         }
     </script>
 </body>
