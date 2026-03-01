@@ -3,88 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALAXY HUB | STABLE V1</title>
+    <title>GALACTIC HUB | MISSION CONTROL</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-        body { background: #0b001a; color: #d880ff; font-family: 'Orbitron', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* BACKGROUND */
+        body { background: #020005; color: #d880ff; font-family: 'Orbitron', sans-serif; margin: 0; overflow: hidden; }
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000 url(https://www.script-tutorials.com/demos/360/images/stars.png) repeat; z-index: -1; }
 
-        /* GRID */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 30px; }
-        .card { background: rgba(30, 0, 60, 0.8); border: 2px solid #bc13fe; border-radius: 10px; cursor: pointer; transition: 0.3s; text-align: center; overflow: hidden; }
-        .card:hover { transform: scale(1.05); box-shadow: 0 0 20px #ff00ff; }
-        .card img { width: 100%; height: 140px; object-fit: cover; }
+        /* HUB GRID */
+        #hub-page { height: 100vh; overflow-y: auto; padding: 20px 20px 100px 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; max-width: 1300px; margin: 0 auto; }
         
-        /* THEATER MODE (Crazy Games Style) */
-        #theater { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; flex-direction: column; }
-        .t-header { padding: 10px; background: #1a0033; display: flex; justify-content: space-between; border-bottom: 2px solid #bc13fe; }
-        iframe { flex-grow: 1; width: 100%; border: none; background: #000; }
+        /* CARD STYLE - CRAZY GAMES LOOK */
+        .card { background: rgba(20, 0, 40, 0.9); border: 2px solid #bc13fe; border-radius: 12px; cursor: pointer; transition: 0.3s; overflow: hidden; position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: #ff00ff; box-shadow: 0 0 20px #bc13fe; }
+        .card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+        .card-info { padding: 12px; text-align: center; background: rgba(188, 19, 254, 0.1); font-size: 13px; font-weight: bold; }
 
-        /* MUSIC BAR */
-        .music-bar { position: fixed; bottom: 0; width: 100%; background: #110022; border-top: 2px solid #bc13fe; padding: 10px; display: flex; justify-content: center; gap: 15px; }
-        button { background: #bc13fe; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
+        /* THEATER MODE */
+        #theater { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05000a; z-index: 9999; flex-direction: column; }
+        .t-header { background: #110022; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #bc13fe; }
+        .t-content { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .iframe-container { width: 95%; height: 95%; background: #000; border: 3px solid #bc13fe; box-shadow: 0 0 30px #bc13fe; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* UI BUTTONS */
+        .btn { background: #bc13fe; color: white; border: none; padding: 10px 20px; font-family: 'Orbitron'; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .btn:hover { background: #ff00ff; }
+        
+        .music-bar { position: fixed; bottom: 0; width: 100%; background: rgba(10, 0, 20, 0.95); border-top: 2px solid #bc13fe; padding: 15px; display: flex; justify-content: center; gap: 20px; }
     </style>
 </head>
 <body>
     <div class="stars"></div>
-    <h1 style="text-align:center; margin-top:20px; text-shadow: 0 0 10px #bc13fe;">GALAXY ARCADE</h1>
 
-    <div class="grid" id="g"></div>
+    <div id="hub-page">
+        <h1 style="text-align:center; text-shadow: 0 0 15px #bc13fe;">UNIT-01: GALACTIC_HUB</h1>
+        <div class="grid" id="game-grid"></div>
+    </div>
 
     <div id="theater">
         <div class="t-header">
-            <button onclick="closeG()">⬅ BACK</button>
-            <h3 id="t-title">LOADING...</h3>
-            <button onclick="full()">⛶ FULLSCREEN</button>
+            <button class="btn" onclick="closeGame()">⬅ BACK TO HUB</button>
+            <h2 id="t-title" style="margin:0;">LOADING...</h2>
+            <button class="btn" onclick="goFull()">⛶ FULLSCREEN</button>
         </div>
-        <iframe id="f" allow="autoplay; fullscreen; keyboard"></iframe>
+        <div class="t-content">
+            <div class="iframe-container">
+                <iframe id="game-frame" src="" allow="autoplay; fullscreen; keyboard"></iframe>
+            </div>
+        </div>
     </div>
 
     <div class="music-bar">
-        <button onclick="m.play()">▶ PLAY MUSIC</button>
-        <button onclick="m.pause()">⏸ PAUSE</button>
+        <button class="btn" onclick="toggleMusic()">🎵 PLAY/PAUSE MUSIC</button>
     </div>
 
+    <audio id="bg-audio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
     <script>
-        // These are the most stable links that won't trigger "Refused to Connect"
         const games = [
-            { n: "Drift Boss", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
-            { n: "Neon Biker", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
-            { n: "Tower Twist", u: "https://games.gamezop.com/g/H1Zl1kr7mX", i: "https://static.gamezop.com/H1Zl1kr7mX/thumb.png" },
+            { n: "Veck.io", u: "https://veck.io/", i: "https://img.gamedistribution.com/83273640700c439185794c1f6d7247d8-512x512.jpeg" },
+            { n: "Bloxd.io", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png" },
+            { n: "Space Waves", u: "https://spacewaves.io/", i: "https://img.gamedistribution.com/5f7623971e4d41389886470081d6683a-512x512.jpeg" },
+            { n: "Traffic Rider", u: "https://traffic-rider.io/", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
+            { n: "Rocket Goal", u: "https://rocketgoal.io/", i: "https://img.gamedistribution.com/264287570481498696ec0667e45e758e-512x512.jpeg" },
+            { n: "Drift Hunters", u: "https://www.drifted.com/drifting-games/drifted-games-drift-hunters/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
             { n: "Cyber Racer", u: "https://games.gamezop.com/g/SkhljT2fdgb", i: "https://static.gamezop.com/SkhljT2fdgb/thumb.png" },
+            { n: "Tower Twist", u: "https://games.gamezop.com/g/H1Zl1kr7mX", i: "https://static.gamezop.com/H1Zl1kr7mX/thumb.png" },
+            { n: "Stickman Swing", u: "https://games.gamezop.com/g/r1_gxS6mX", i: "https://static.gamezop.com/r1_gxS6mX/thumb.png" },
             { n: "Knife Flip", u: "https://games.gamezop.com/g/rJ98eS6mX", i: "https://static.gamezop.com/rJ98eS6mX/thumb.png" },
-            { n: "City Dunk", u: "https://games.gamezop.com/g/B1M4eH67mX", i: "https://static.gamezop.com/B1M4eH67mX/thumb.png" }
+            { n: "Hextris", u: "https://hextris.io/", i: "https://hextris.io/images/og_image.png" },
+            { n: "City Dunk", u: "https://games.gamezop.com/g/B1M4eH67mX", i: "https://static.gamezop.com/B1M4eH67mX/thumb.png" },
+            { n: "Neon Biker", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
+            { n: "Moto X3M", u: "https://games.crazygames.com/en_US/moto-x3m/index.html", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png" },
+            { n: "Drift Boss", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" }
         ];
 
-        const g = document.getElementById('g');
+        const grid = document.getElementById('game-grid');
         for(let i=0; i<30; i++) {
-            let item = games[i % games.length];
-            g.innerHTML += `<div class="card" onclick="play('${item.u}', '${item.n}')">
-                <img src="${item.i}">
-                <div style="padding:10px">${item.n}</div>
-            </div>`;
+            let g = games[i % games.length];
+            grid.innerHTML += `
+                <div class="card" onclick="openGame('${g.u}', '${g.n}')">
+                    <img src="${g.i}" onerror="this.src='https://via.placeholder.com/240x160/220044/ffffff?text=MISSION'">
+                    <div class="card-info">${g.n}</div>
+                </div>`;
         }
 
-        function play(u, n) {
-            document.getElementById('f').src = u;
+        function openGame(u, t) {
+            document.getElementById('hub-page').style.display = 'none';
             document.getElementById('theater').style.display = 'flex';
-            document.getElementById('t-title').innerText = n;
+            document.getElementById('game-frame').src = u;
+            document.getElementById('t-title').innerText = t;
         }
 
-        function closeG() {
+        function closeGame() {
+            document.getElementById('hub-page').style.display = 'block';
             document.getElementById('theater').style.display = 'none';
-            document.getElementById('f').src = "";
+            document.getElementById('game-frame').src = "";
         }
 
-        function full() {
-            let el = document.getElementById('f');
-            if(el.requestFullscreen) el.requestFullscreen();
-            else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        function goFull() {
+            let f = document.getElementById('game-frame');
+            if (f.requestFullscreen) f.requestFullscreen();
+            else if (f.webkitRequestFullscreen) f.webkitRequestFullscreen();
         }
 
-        let m = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        const audio = document.getElementById('bg-audio');
+        function toggleMusic() { audio.paused ? audio.play() : audio.pause(); }
     </script>
 </body>
 </html>
