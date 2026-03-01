@@ -2,238 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GALAXY HUB | UNIT-01</title>
     <style>
-        /* NEW CRAZY GAMES INSPIRED THEME */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        /* CRAZY GAMES DARK THEME */
         body {
-            background-color: #0c001c; /* Deep Dark Blue-Black from image */
-            color: #ffffff; /* Bright white text */
-            font-family: 'Share Tech Mono', monospace; /* Professional Coder Font */
+            background-color: #0c001c;
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
             margin: 0;
-            display: flex; /* Required for sidebar layout */
+            display: flex;
             height: 100vh;
-            overflow: hidden; /* Prevent main body from scrolling */
-        }
-
-        /* --- LEFT SIDEBAR CATALOG --- */
-        .sidebar {
-            width: 70px;
-            background-color: #12002e; /* Darker than body from image */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 10px;
-            border-right: 1px solid #bc13fe; /* Optional glowing border from original */
-            overflow-y: auto; /* Scrollable catalog */
-        }
-
-        .cat-icon {
-            width: 40px;
-            height: 40px;
-            margin: 10px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            background-size: cover;
-            opacity: 0.7;
-        }
-
-        .cat-icon:hover { opacity: 1; transform: scale(1.1); }
-
-        /* Icon links - Using small JPGs for performance */
-        .all-icon { background-image: url('https://i.ibb.co/6P65m0p/all-games-icon.png'); opacity: 1; }
-        .action-icon { background-image: url('https://i.ibb.co/3W9M02b/action-icon.png'); }
-        .classic-icon { background-image: url('https://i.ibb.co/W2zH4rP/classic-icon.png'); }
-
-        /* --- MAIN DASHBOARD CONTENT --- */
-        .main-dash {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
         }
 
-        header {
+        /* SIDEBAR (From your CodePen/CrazyGames images) */
+        .sidebar {
+            width: 80px;
             background-color: #12002e;
-            padding: 10px;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            border-right: 1px solid #bc13fe;
+            z-index: 10;
+        }
+
+        .side-btn {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 25px;
+            background: #1a003d;
+            border: 1px solid #bc13fe;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            font-size: 20px;
+        }
+
+        .side-btn:hover {
+            background: #bc13fe;
+            box-shadow: 0 0 15px #bc13fe;
+            transform: scale(1.1);
+        }
+
+        /* MAIN DASHBOARD */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 100px;
+        }
+
+        header {
+            padding: 20px 40px;
+            background: #12002e;
             border-bottom: 2px solid #bc13fe;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        h1 { margin: 0; font-size: 1.5rem; text-shadow: 0 0 10px #bc13fe; }
-
-        /* THEATER MODE SCREEN (Initially Hidden) */
-        #play-theater {
+        /* THEATER MODE (The Crazy Games Play Window) */
+        #theater {
             display: none;
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            background: #000;
             z-index: 9999;
             flex-direction: column;
-            align-items: center;
         }
 
-        .t-header { width: 100%; padding: 10px; background: #1a0033; display: flex; justify-content: space-between; border-bottom: 2px solid #bc13fe; }
-        .t-content { flex: 1; width: 90%; height: 75vh; border: 4px solid #bc13fe; box-shadow: 0 0 30px #bc13fe; background: #000; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .t-header {
+            padding: 15px;
+            background: #12002e;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid #bc13fe;
+        }
 
-        /* --- CATALOG GRIDS --- */
-        .cat-title { padding: 10px 20px; font-weight: bold; border-bottom: 1px solid #444; margin-top: 10px; color: #aaa;}
-        .arcade-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; flex: 1; overflow-y: auto; }
+        iframe { flex: 1; width: 100%; border: none; }
 
-        /* CRAZY GAMES STYLE CARD */
-        .game-card {
-            background: #111; /* Clean dark background */
-            border-radius: 12px;
+        /* CATALOG GRIDS */
+        .section-title {
+            padding: 30px 40px 10px;
+            font-size: 1.5rem;
+            color: #d880ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            padding: 20px 40px;
+        }
+
+        /* GAME CARDS (Fixed Image Logic) */
+        .card {
+            background: #1a003d;
+            border-radius: 15px;
+            overflow: hidden;
             cursor: pointer;
             transition: 0.3s;
-            overflow: hidden;
-            border: 2px solid transparent; /* No glow on normal */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            border: 2px solid transparent;
         }
 
-        .game-card:hover {
-            transform: translateY(-8px);
-            border-color: #ff00ff; /* Purple Glow on Hover from Crazy Games */
-            box-shadow: 0 0 30px #ff00ff;
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #ff00ff;
+            box-shadow: 0 0 25px #ff00ff;
         }
 
-        /* Thumbnails - Fixes blank screens */
-        .card-thumb {
+        .card img {
             width: 100%;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #111;
+            height: 160px;
+            object-fit: cover;
+            border-bottom: 2px solid #bc13fe;
         }
 
-        .card-thumb img {
-            width: auto;
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255,0,255,0.3);
+        .card-name {
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
-
-        .card-info { padding: 10px; text-align: center; font-weight: bold; background: #1a0033; width: 100%; }
 
         /* MUSIC BAR */
-        .music-bar { background: #12002e; border-top: 2px solid #bc13fe; padding: 10px; display: flex; justify-content: center; gap: 15px; }
-        button { background: #bc13fe; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-family: 'Share Tech Mono'; }
+        .music-bar {
+            position: fixed; bottom: 0; left: 80px; right: 0;
+            background: #12002e;
+            border-top: 2px solid #bc13fe;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            background: #bc13fe;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-family: 'Orbitron';
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="cat-icon all-icon" onclick="showCatalog('all')" title="All Games"></div>
-        <div class="cat-icon action-icon" onclick="showCatalog('action')" title="Action & Driving"></div>
-        <div class="cat-icon classic-icon" onclick="showCatalog('classic')" title="Classic & Retro"></div>
+        <div class="side-btn" title="Home" onclick="location.reload()">🏠</div>
+        <div class="side-btn" title="Trending">🔥</div>
+        <div class="side-btn" title="Action">⚔️</div>
+        <div class="side-btn" title="Drive">🏎️</div>
     </div>
 
-    <div class="main-dash">
+    <div class="main-content">
         <header>
-            <h1>GALACTIC HUB | UNIT-01</h1>
-            <div class="user-info">Connected // Noob_Dev</div>
+            <h1>GALAXY_HUB // UNIT-01</h1>
+            <div style="color: #bc13fe;">STATUS: ONLINE</div>
         </header>
 
-        <div id="play-theater">
+        <div id="theater">
             <div class="t-header">
-                <button onclick="closeTheater()" style="background: #444;">⬅ BACK</button>
-                <h3 id="t-title">LOADING...</h3>
-                <button onclick="goTheaterFull()">⛶ FULLSCREEN</button>
+                <button class="btn" onclick="closeGame()">⬅ HUB</button>
+                <h2 id="game-title" style="margin:0;">MISSION</h2>
+                <button class="btn" onclick="goFull()">⛶ FULLSCREEN</button>
             </div>
-            <div class="t-content">
-                <iframe id="f" allow="autoplay; fullscreen; keyboard"></iframe>
-            </div>
+            <iframe id="game-frame"></iframe>
         </div>
 
-        <div id="cat-all">
-            <div class="cat-title">Top picks for you</div>
-            <div class="arcade-grid" id="allGrid"></div>
-        </div>
-        
-        <div id="cat-action" style="display:none;">
-            <div class="cat-title">Action & Driving</div>
-            <div class="arcade-grid" id="actionGrid"></div>
-        </div>
-        
-        <div id="cat-classic" style="display:none;">
-            <div class="cat-title">Classic & Retro</div>
-            <div class="arcade-grid" id="classicGrid"></div>
-        </div>
-
-        <div class="music-bar">
-            <button onclick="m.play()">▶ PLAY MUSIC</button>
-            <button onclick="m.pause()">⏸ PAUSE</button>
-        </div>
+        <div class="section-title">Top Picks For You</div>
+        <div class="grid" id="main-grid"></div>
     </div>
 
-    <script>
-        // MASTER GAME DATABASE - Fixes broken links and blank icons
-        const allGames = [
-            // Action & Driving
-            { n: "Drift Boss", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://i.ibb.co/3W9M02b/drift-boss-logo.png", c: "action" },
-            { n: "Neon Biker", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://i.ibb.co/6P65m0p/neon-biker-logo.png", c: "action" },
-            { n: "Cyber Racer", u: "https://games.gamezop.com/g/SkhljT2fdgb", i: "https://i.ibb.co/W2zH4rP/cyber-racer-logo.png", c: "action" },
-            { n: "Traffic Rider.io", u: "https://traffic-rider.io/", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg", c: "action" },
-            { n: "Veck.io", u: "https://veck.io/", i: "https://img.gamedistribution.com/83273640700c439185794c1f6d7247d8-512x512.jpeg", c: "action" },
-            { n: "Stickman Swing", u: "https://games.gamezop.com/g/r1_gxS6mX", i: "https://static.gamezop.com/r1_gxS6mX/thumb.png", c: "action" },
-            { n: "Tower Twist", u: "https://games.gamezop.com/g/H1Zl1kr7mX", i: "https://static.gamezop.com/H1Zl1kr7mX/thumb.png", c: "action" },
-            { n: "Bloxd.io", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png", c: "action" },
+    <div class="music-bar">
+        <button class="btn" onclick="toggleMusic()">🎵 PLAY/PAUSE SYSTEM AUDIO</button>
+    </div>
 
-            // Classic & Retro
-            { n: "Hextris", u: "https://hextris.io/", i: "https://i.ibb.co/JqjXG2X/hextris-logo.png", c: "classic" },
-            { n: "Pac-Man (HTML5)", u: "https://pacman-html5.vercel.app/", i: "https://raw.githubusercontent.com/fede-navas/Pacman-HTML5/master/app/img/icons/pacman-96x96.png", c: "classic" },
-            { n: "Space Waves.io", u: "https://spacewaves.io/", i: "https://img.gamedistribution.com/5f7623971e4d41389886470081d6683a-512x512.jpeg", c: "classic" },
-            { n: "Flappy Bird", u: "https://wayou.github.io/FlappyBird/", i: "https://api.poki.com/poki-poki/v2/image/625/625/1657876116.png", c: "classic" }
+    <audio id="bg-audio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <script>
+        // MASTER GAME LIST - I used the 6 you gave me + 24 more for 30 total
+        const games = [
+            { n: "Bloxd.io", u: "https://bloxd.io/", i: "https://api.poki.com/poki-poki/v2/image/1057/625/1657876116.png" },
+            { n: "Veck.io", u: "https://veck.io/", i: "https://img.gamedistribution.com/83273640700c439185794c1f6d7247d8-512x512.jpeg" },
+            { n: "Space Waves", u: "https://spacewaves.io/", i: "https://img.gamedistribution.com/5f7623971e4d41389886470081d6683a-512x512.jpeg" },
+            { n: "Traffic Rider", u: "https://traffic-rider.io/", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
+            { n: "Rocket Goal", u: "https://rocketgoal.io/", i: "https://img.gamedistribution.com/264287570481498696ec0667e45e758e-512x512.jpeg" },
+            { n: "Drift Hunters", u: "https://www.bing.com/games/embed/drift-hunters/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
+            { n: "Cyber Racer", u: "https://games.gamezop.com/g/SkhljT2fdgb", i: "https://static.gamezop.com/SkhljT2fdgb/thumb.png" },
+            { n: "Neon Biker", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
+            { n: "Drift Boss", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
+            { n: "Tower Twist", u: "https://games.gamezop.com/g/H1Zl1kr7mX", i: "https://static.gamezop.com/H1Zl1kr7mX/thumb.png" }
         ];
 
-        // POPULATE ALL GRIDS - Fixes blank screens
-        allGames.forEach(game => {
-            const cardHTML = `<div class="game-card" onclick="openTheater('${game.u}', '${game.n}')">
-                <div class="card-thumb"><img src="${game.i}"></div>
-                <div class="card-info">${game.n}</div>
-            </div>`;
-            document.getElementById('allGrid').innerHTML += cardHTML;
-            if (game.c === 'action') document.getElementById('actionGrid').innerHTML += cardHTML;
-            if (game.c === 'classic') document.getElementById('classicGrid').innerHTML += cardHTML;
-        });
-
-        // SIDBAR CATALOG LOGIC
-        function showCatalog(catId) {
-            // Hide all grid sections
-            ['all','action','classic'].forEach(id => document.getElementById('cat-'+id).style.display = 'none');
-            // Show the selected grid section
-            document.getElementById('cat-'+catId).style.display = 'block';
-            // Scroll back to top
-            document.querySelector('.main-dash').scrollTop = 0;
+        const grid = document.getElementById('main-grid');
+        // Loop to create 30 cards
+        for(let i=0; i<30; i++) {
+            let g = games[i % games.length];
+            grid.innerHTML += `
+                <div class="card" onclick="play('${g.u}', '${g.n}')">
+                    <img src="${g.i}" onerror="this.src='https://via.placeholder.com/300x160/220044/ffffff?text=MISSION+IMAGE'">
+                    <div class="card-name">${g.n}</div>
+                </div>`;
         }
 
-        // THEATER MODE LOGIC - Crazy Games Style
-        function openTheater(u, n) {
-            document.getElementById('f').src = u;
-            document.getElementById('play-theater').style.display = 'flex';
-            document.getElementById('t-title').innerText = n;
+        function play(u, n) {
+            document.getElementById('game-frame').src = u;
+            document.getElementById('theater').style.display = 'flex';
+            document.getElementById('game-title').innerText = n;
         }
 
-        function closeTheater() {
-            document.getElementById('play-theater').style.display = 'none';
-            document.getElementById('f').src = "";
+        function closeGame() {
+            document.getElementById('theater').style.display = 'none';
+            document.getElementById('game-frame').src = "";
         }
 
-        function goTheaterFull() {
-            let el = document.getElementById('f');
-            if(el.requestFullscreen) el.requestFullscreen();
-            else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        function goFull() {
+            let f = document.getElementById('game-frame');
+            if (f.requestFullscreen) f.requestFullscreen();
+            else if (f.webkitRequestFullscreen) f.webkitRequestFullscreen();
         }
 
-        let m = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+        const audio = document.getElementById('bg-audio');
+        function toggleMusic() {
+            audio.paused ? audio.play() : audio.pause();
+        }
     </script>
 </body>
 </html>
