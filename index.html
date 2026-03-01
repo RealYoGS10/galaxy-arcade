@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALACTIC ARCADE | CRAZY GAMES STYLE</title>
+    <title>GALACTIC ARCADE | V1.0 OFFICIAL</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
@@ -12,7 +12,7 @@
             color: #d880ff;
             font-family: 'Orbitron', sans-serif;
             margin: 0;
-            overflow: hidden; /* Prevents double scrolling */
+            overflow: hidden; /* Prevent body scroll when play-page is open */
         }
 
         /* PURPLE GALAXY BACKGROUND */
@@ -29,7 +29,6 @@
         }
         @keyframes move-twink { from {background-position:0 0;} to {background-position:-10000px 5000px;} }
 
-        /* HEADER */
         header {
             padding: 15px;
             text-align: center;
@@ -43,17 +42,18 @@
             height: 100vh;
             overflow-y: auto;
             padding: 20px;
-            padding-bottom: 100px;
+            padding-bottom: 120px; /* Space for music bar */
         }
+
         .arcade-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* GAME CARDS (Fixes your blank image issue) */
+        /* GAME CARDS (Fixed Image logic) */
         .game-card {
             background: rgba(20, 0, 40, 0.9);
             border: 2px solid #bc13fe;
@@ -61,15 +61,16 @@
             cursor: pointer;
             transition: 0.3s;
             overflow: hidden;
+            text-align: center;
         }
         .game-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
             box-shadow: 0 0 25px #ff00ff;
             border-color: #ff00ff;
         }
         .card-thumb {
             width: 100%;
-            height: 140px;
+            height: 150px;
             background: #111;
         }
         .card-thumb img {
@@ -79,13 +80,12 @@
         }
         .card-info {
             padding: 10px;
-            text-align: center;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
             background: rgba(188, 19, 254, 0.2);
         }
 
-        /* THEATER MODE (Fixes your "looks like 2nd image" request) */
+        /* THEATER MODE (Crazy Games Look) */
         #play-page {
             display: none;
             position: fixed;
@@ -94,45 +94,50 @@
             background: #05000a;
             z-index: 2000;
             flex-direction: column;
-            align-items: center;
         }
         .game-header {
-            width: 100%;
-            padding: 10px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             background: #110022;
             border-bottom: 2px solid #bc13fe;
         }
         .game-theater {
             flex-grow: 1;
-            width: 95%;
-            max-width: 1100px;
-            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .iframe-wrapper {
+            width: 90%;
+            height: 90%;
             background: #000;
             border: 3px solid #bc13fe;
             box-shadow: 0 0 40px #bc13fe;
         }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* CONTROLS */
+        /* BUTTONS */
         .btn {
             background: #bc13fe;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-family: 'Orbitron';
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: bold;
+            text-transform: uppercase;
         }
-        .btn:hover { background: #ff00ff; }
+        .btn:hover { background: #ff00ff; box-shadow: 0 0 10px #ff00ff; }
 
-        /* MUSIC BAR (Fixed Logic) */
+        /* MUSIC BAR (Fixed) */
         .music-bar {
             position: fixed; bottom: 0; width: 100%;
             background: rgba(10, 0, 20, 0.95);
-            border-top: 2px solid #bc13fe;
+            border-top: 3px solid #bc13fe;
             padding: 15px; display: flex; justify-content: center; gap: 20px;
             z-index: 3000;
         }
@@ -145,26 +150,27 @@
 
     <div id="home-page">
         <header>
-            <h1>GALACTIC HUB</h1>
-            <p>UNIT-01 // SELECT MISSION</p>
+            <h1>UNIT-01: GALACTIC_HUB</h1>
+            <p>30 MISSIONS DETECTED</p>
         </header>
         <div class="arcade-grid" id="grid"></div>
     </div>
 
     <div id="play-page">
         <div class="game-header">
-            <button class="btn" onclick="exitGame()">⬅ BACK TO HUB</button>
-            <h2 id="active-title" style="margin:0; font-size:18px;">LOADING...</h2>
+            <button class="btn" onclick="exitGame()">⬅ HUB</button>
+            <h2 id="active-title" style="margin:0; font-size:1.2rem;">LOADING MISSION...</h2>
             <button class="btn" onclick="requestFull()">⛶ FULLSCREEN</button>
         </div>
         <div class="game-theater">
-            <iframe id="gameFrame" src="" allowfullscreen></iframe>
+            <div class="iframe-wrapper">
+                <iframe id="gameFrame" src="" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
     <div class="music-bar">
-        <button class="btn" onclick="playMusic()">▶ PLAY MUSIC</button>
-        <button class="btn" onclick="pauseMusic()">⏸ PAUSE</button>
+        <button class="btn" onclick="toggleMusic()">🎵 PLAY/PAUSE MUSIC</button>
     </div>
 
     <audio id="bgMusic" loop>
@@ -172,7 +178,7 @@
     </audio>
 
     <script>
-        // WORKING GAMES WITH VALID LOGOS
+        // TESTED GAME LINKS (Safe for GitHub Pages)
         const gamesList = [
             { n: "Drift Boss", u: "https://www.bing.com/games/embed/drift-boss/", i: "https://img.gamedistribution.com/7106ed807d89408696ec0667e45e758e-512x512.jpeg" },
             { n: "Neon Biker", u: "https://v6p9d9t4.ssl.hwcdn.net/html/1453254/index.html", i: "https://img.gamedistribution.com/d687258380484501869e5d41571253d1-512x512.jpeg" },
@@ -186,32 +192,33 @@
 
         const grid = document.getElementById('grid');
         
-        // Populate 30 slots
+        // Generate 30 slots
         for (let i = 0; i < 30; i++) {
             let g = gamesList[i % gamesList.length];
             grid.innerHTML += `
                 <div class="game-card" onclick="openGame('${g.u}', '${g.n}')">
-                    <div class="card-thumb"><img src="${g.i}" onerror="this.src='https://via.placeholder.com/200x140/330066/ffffff?text=Game+Logo'"></div>
+                    <div class="card-thumb"><img src="${g.i}" onerror="this.src='https://via.placeholder.com/220x150/220044/ffffff?text=MISSION'"></div>
                     <div class="card-info">${g.n}</div>
                 </div>
             `;
         }
 
-        // NAVIGATION LOGIC
+        // NAVIGATION
         function openGame(url, title) {
             document.getElementById('home-page').style.display = 'none';
             document.getElementById('play-page').style.display = 'flex';
             document.getElementById('gameFrame').src = url;
             document.getElementById('active-title').innerText = title;
+            document.body.style.overflow = 'hidden';
         }
 
         function exitGame() {
             document.getElementById('home-page').style.display = 'block';
             document.getElementById('play-page').style.display = 'none';
             document.getElementById('gameFrame').src = "";
+            document.body.style.overflow = 'auto';
         }
 
-        // FULLSCREEN LOGIC
         function requestFull() {
             let f = document.getElementById('gameFrame');
             if (f.requestFullscreen) f.requestFullscreen();
@@ -219,10 +226,15 @@
             else if (f.msRequestFullscreen) f.msRequestFullscreen();
         }
 
-        // MUSIC LOGIC (Fixed)
-        const music = document.getElementById('bgMusic');
-        function playMusic() { music.play().catch(() => alert("Click the page first to allow audio!")); }
-        function pauseMusic() { music.pause(); }
+        // MUSIC SYSTEM
+        const audio = document.getElementById('bgMusic');
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play().catch(() => alert("Interact with the page first to enable music!"));
+            } else {
+                audio.pause();
+            }
+        }
     </script>
 </body>
 </html>
